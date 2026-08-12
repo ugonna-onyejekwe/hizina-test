@@ -5,6 +5,8 @@ import ModerationAndEnforcement from "./_components/moderation-and-enforcement";
 import InAppReportingAndFeedback from "./_components/in-appreprorting-and-feedback";
 import LegalCompliance from "./_components/legal-compliance";
 import PolicyUpdates from "./_components/policy-updates";
+import ChildSafetyPolicyNavbar from "./_components/child-policy-nav";
+import Footer from "@/app/_components/footer";
 
 export const metadata: Metadata = {
   title: "Child Safety Policy",
@@ -15,6 +17,8 @@ export const metadata: Metadata = {
 export default function ChildSafetyPolicyPage() {
   return (
     <>
+      <ChildSafetyPolicyNavbar />
+
       <Container className="pt-20">
         <h1 className="font-extrabold text-3xl md:text-4xl lg:text-7xl text_gradient capitalize pt-5 w-fit">
           CHILD SAFETY STANDARDS POLICY
@@ -40,6 +44,8 @@ export default function ChildSafetyPolicyPage() {
         <LegalCompliance />
         <PolicyUpdates />
       </Container>
+
+      <Footer />
     </>
   );
 }

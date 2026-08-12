@@ -11,6 +11,8 @@ import HowOftenWillYouUpdateThisCookiesPolicy from "./_components/HowOftenWillYo
 import WhereCaniGetFurtherInfo from "./_components/WhereCaniGetFurtherInfo";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/constants";
+import CookiePolicyNavbar from "./_components/cookie-policy-nav";
+import Footer from "@/app/_components/footer";
 
 export const metadata: Metadata = {
   title: "Cookie Policy",
@@ -21,7 +23,9 @@ export const metadata: Metadata = {
 export default function CookiePolicyPage() {
   return (
     <>
-      <Container>
+      <CookiePolicyNavbar />
+
+      <Container className="pt-20">
         <h1 className="font-extrabold  text-3xl md:text-4xl  lg:text-7xl  text_gradient capitalize pt-5   w-fit">
           COOKIE POLICY
         </h1>
@@ -61,6 +65,8 @@ export default function CookiePolicyPage() {
         <HowOftenWillYouUpdateThisCookiesPolicy />
         <WhereCaniGetFurtherInfo />
       </Container>
+
+      <Footer />
     </>
   );
 }

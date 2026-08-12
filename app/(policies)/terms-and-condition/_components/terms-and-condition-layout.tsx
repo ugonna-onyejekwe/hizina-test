@@ -1,25 +1,24 @@
 import type { ReactNode } from "react";
-import SideNav from "./SideNav";
+import TermsSideNav from "./side-nav";
 import Footer from "@/app/_components/footer";
 
 type Props = {
   children: ReactNode;
 };
 
-const PrivacyPolicyLayout = ({ children }: Props) => {
+const TermsAndconditionLayout = ({ children }: Props) => {
   return (
     <>
-      <div className="flex items-start  gap-10 mt-15 ">
+      <div className="flex gap-10 mt-15 ">
         {/* Sidebar */}
-        <SideNav />
+        <TermsSideNav />
 
         {/* Main content */}
         <main className="flex-1">{children}</main>
       </div>
-
       <Footer />
     </>
   );
 };
 
-export default PrivacyPolicyLayout;
+export default TermsAndconditionLayout;

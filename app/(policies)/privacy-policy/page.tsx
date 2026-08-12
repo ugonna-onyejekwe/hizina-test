@@ -18,6 +18,7 @@ import Summary from "./_component/summary";
 import Container from "@/components/ui/container";
 
 import type { Metadata } from "next";
+import PrivacyNavbar from "./_component/navbar";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",
@@ -28,7 +29,9 @@ export const metadata: Metadata = {
 export default function PrivacyPolicyPage() {
   return (
     <>
-      <Container>
+      <PrivacyNavbar />
+
+      <Container className="pt-20">
         <h1 className="font-extrabold uppercase  text-3xl md:text-4xl  lg:text-7xl  text_gradient  pt-5   w-fit">
           Privacy policy
         </h1>

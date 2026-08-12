@@ -5,21 +5,23 @@ import Link from "next/link";
 
 const PersonalMessageSection = () => {
   return (
-    <div className="flex items-center gap-10 max-md:flex-col max-md:gap-5 mt-20">
+    <div className="flex items-center gap-15 max-md:flex-col max-md:gap-5 mt-20">
       <div
-      //  type="left"
+        //  type="left"
+        className="flex-1 flex items-center justify-center"
       >
         <Image
           src="/assets/personal-msg.jpg"
           alt="img"
-          className="rounded-lg"
-          height={300}
-          width={300}
+          className="rounded-lg w-full h-fit"
+          height={500}
+          width={500}
         />
       </div>
 
       <div
-      //  type="right"
+        //  type="right"
+        className="flex-1"
       >
         <h3 className="font-bold text-xl  md:text-2xl lg:text-4xl text_gradient">
           Your personal messages are private
@@ -45,7 +47,7 @@ const PersonalMessageSection = () => {
           share messages with Hizina.`}
         </p>
 
-        <Button variant={"link"}>
+        <Button variant={"link"} className={"px-0"}>
           <Link href={"/"}>Learn more</Link>
         </Button>
       </div>

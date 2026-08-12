@@ -7,7 +7,8 @@ const ReportingSection = () => {
   return (
     <div className="mt-20">
       <div
-      //  type="bottom"
+        //  type="bottom"
+        className="max-w-4xl mx-auto"
       >
         <h2 className="text-center font-extrabold text-2xl md:text-4xl lg:text-4xl  text_gradient">
           Making reporting simple
@@ -15,7 +16,8 @@ const ReportingSection = () => {
       </div>
 
       <div
-      // type="bottom" delay={0.3}
+        // type="bottom" delay={0.3}
+        className="max-w-4xl mx-auto"
       >
         <p className="txt text-center pt-3">
           {`If you see something, say something. If we detect a violation to our
@@ -27,12 +29,12 @@ const ReportingSection = () => {
 
       <section className="flex gap-10 max-md:flex-col mt-10">
         {reportData.map((data) => (
-          <div key={data.header} className="flex flex-col-reverse gap-0">
+          <div key={data.header} className="flex-1 flex flex-col-reverse gap-0">
             <section className="flex-1">
               <div
               //  delay={0.3} type="bottom"
               >
-                <h3 className="font-bold  text-lg  md:text-2xl lg:text-3xl  text_gradient">
+                <h3 className="font-bold  text-xl  md:text-2xl lg:text-3xl  text_gradient">
                   {data.header}
                 </h3>
               </div>
@@ -45,7 +47,7 @@ const ReportingSection = () => {
               <div
               //  type="bottom" delay={0.3}
               >
-                <Button variant={"link"}>
+                <Button variant={"link"} className={"px-0"}>
                   <Link href={data.route}>Learn more</Link>
                 </Button>
               </div>
@@ -53,9 +55,9 @@ const ReportingSection = () => {
 
             <div
               //  type="bottom" delay={0.3}
-              className="flex-1"
+              className="flex-1 flex items-center justify-center"
             >
-              <Image src={data.image} alt="image" height={300} width={300} />
+              <Image src={data.image} alt="image" height={500} width={500} />
             </div>
           </div>
         ))}

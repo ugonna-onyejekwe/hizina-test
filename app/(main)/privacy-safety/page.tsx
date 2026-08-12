@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function PrivacySafetyPage() {
   return (
-    <div>
+    <div className="mt-10">
       <Container>
         <div
         //  type="bottom"
@@ -29,18 +29,20 @@ export default function PrivacySafetyPage() {
         // type="bottom"
         //  delay={0.3}
         >
-          <section className="mt-4 rounded-lg overflow-hidden size-fit">
+          <section className="mt-5 rounded-lg overflow-hidden  w-full max-h-[500px]">
             <Image
               src="/assets/privacy-hero.jpg"
               alt="privacy-hero"
-              className="size-full"
-              fill
+              className="w-full h-full"
+              width={400}
+              height={400}
             />
           </section>
         </div>
 
         <div
-        // type="bottom" delay={0.3}
+          // type="bottom" delay={0.3}
+          className="max-w-4xl mx-auto mt-15 lg:mt-20 "
         >
           <h1 className="text-center font-extrabold text-2xl md:text-4xl lg:text-4xl  text_gradient mt-5">
             Safely and securely connect with your friends, family and the
@@ -49,7 +51,8 @@ export default function PrivacySafetyPage() {
         </div>
 
         <div
-        //  type="bottom"
+          //  type="bottom"
+          className="mt-10 lg:mt-15"
         >
           <MoreInfoBoxes />
         </div>

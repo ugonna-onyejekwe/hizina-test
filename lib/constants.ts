@@ -36,8 +36,8 @@ export const navlist = [
     path: page_routes.privacy,
     name: "Privacy and safety",
   },
-  {
-    path: "/",
-    name: "Help Centre",
-  },
+  // {
+  //   path: "/",
+  //   name: "Help Centre",
+  // },
 ];

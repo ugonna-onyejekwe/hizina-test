@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const PreventingHarmSection = () => {
   return (
-    <div className="mt-15">
+    <div className="mt-20">
       <div
       // type="bottom"
       >
@@ -17,14 +17,14 @@ const PreventingHarmSection = () => {
       <div
       // type="bottom" delay={0.3}
       >
-        <p className="txt text-center pt-3">
+        <p className="txt text-center pt-3 max-w-4xl mx-auto">
           {`  Whether you're messaging a friend, business or someone in a community
           chat, Messenger helps keep you safe online. We work to stop malicious
           activity before it reaches you.`}
         </p>
       </div>
 
-      <section className="mt-7 space-y-8">
+      <section className="mt-10 space-y-8  ">
         {PreventingHarmData_1.map((data, index) => (
           <div
             key={data.header}
@@ -39,29 +39,29 @@ const PreventingHarmSection = () => {
               </h3>
               <p className="txt mt-3">{data.description}</p>
 
-              <Button variant={"link"}>
+              <Button variant={"link"} className={"px-0"}>
                 <Link href={data.route}>Learn more</Link>
               </Button>
             </div>
 
             <div
               // type={index % 2 === 0 ? "right" : "left"}
-              className="flex-1"
+              className="flex-1 flex items-center justify-center"
             >
-              <Image src={data.image} alt="image" height={300} width={300} />
+              <Image src={data.image} alt="image" height={500} width={500} />
             </div>
           </div>
         ))}
       </section>
 
-      <section className="flex gap-10 max-md:flex-col mt-10">
+      <section className="flex gap-10 max-md:flex-col mt-10  ">
         {PreventingHarmData_2.map((data) => (
-          <div key={data.header} className="flex flex-col-reverse gap-0">
+          <div key={data.header} className="flex flex-col-reverse gap-0 flex-1">
             <section className="flex-1">
               <div
               //  type="bottom" delay={0.3}
               >
-                <h3 className="font-bold  text-lg  md:text-2xl lg:text-3xl  text_gradient">
+                <h3 className="font-bold  text-xl  md:text-2xl lg:text-3xl  text_gradient h-fit md:h-[60px] lg:h-[75px]">
                   {data.header}
                 </h3>
               </div>
@@ -74,16 +74,17 @@ const PreventingHarmSection = () => {
               <div
               //  type="bottom" delay={0.3}
               >
-                <Button variant={"link"}>
+                <Button variant={"link"} className={"px-0"}>
                   <Link href={data.route}>Learn more</Link>
                 </Button>
               </div>
             </section>
 
             <div
-            //  type="bottom" className="flex-1"
+              //  type="bottom"
+              className="flex-1 flex items-center justify-center"
             >
-              <Image src={data.image} alt="image" height={300} width={300} />
+              <Image src={data.image} alt="image" height={500} width={500} />
             </div>
           </div>
         ))}

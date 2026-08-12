@@ -2,8 +2,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { siteMetadata } from "@/lib/seo";
 import { helvetica, nimbusSans } from "./fonts";
-import Navbar from "./_components/navbar";
-import Footer from "./_components/footer";
+import NextTopLoader from "nextjs-toploader";
 
 export const metadata = siteMetadata;
 
@@ -18,9 +17,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       )}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar />
+        <NextTopLoader color="var(--primary)" height={3} showSpinner={false} />
+
         {children}
-        <Footer />
       </body>
     </html>
   );

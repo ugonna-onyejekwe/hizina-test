@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { page_routes } from "../routes";
+import { page_routes } from "../../routes";
 import { APP_STORE_URLS } from "@/lib/constants";
 
 export default function HomePage() {
