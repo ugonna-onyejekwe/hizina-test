@@ -2,7 +2,7 @@ import "server-only";
 
 import type { MetadataApiResponse, ProfileMetadata } from "@/types/metadata";
 
-const BASE_URL = process.env.HIZINA_METADATA_BASE_URL;
+const BASE_URL = process.env.UPLOAD_BASE_URL;
 const API_KEY = process.env.HIZINA_METADATA_KEY;
 
 type GetProfileMetadataParams = {
