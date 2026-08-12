@@ -1,5 +1,6 @@
-import { ProfileMetadata } from "@/types/metadata";
 import "server-only";
+
+import type { MetadataApiResponse, ProfileMetadata } from "@/types/metadata";
 
 const BASE_URL = process.env.HIZINA_METADATA_BASE_URL;
 const API_KEY = process.env.HIZINA_METADATA_KEY;
@@ -9,40 +10,58 @@ type GetProfileMetadataParams = {
   userId: string;
 };
 
+type GetProfileMetadataResult = {
+  data: ProfileMetadata | null;
+  error: string | null;
+};
+
 export async function getProfileMetadata({
   userRegion,
   userId,
-}: GetProfileMetadataParams): Promise<ProfileMetadata> {
+}: GetProfileMetadataParams): Promise<GetProfileMetadataResult> {
   if (!BASE_URL || !API_KEY) {
-    throw new Error("Hizina metadata configuration is missing");
+    return {
+      data: null,
+      error: "Hizina metadata configuration is missing",
+    };
   }
 
-  const response = await fetch(`${BASE_URL}/api/metadata/profile`, {
-    method: "GET",
-    headers: {
-      accept: "*/*",
-      key: API_KEY,
-      userregion: userRegion,
-      userid: userId,
-    },
-    cache: "no-store",
-  });
+  try {
+    const response = await fetch(`${BASE_URL}/api/metadata/profile`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        key: API_KEY,
+        userregion: userRegion,
+        userid: userId,
+      },
+      cache: "no-store",
+    });
 
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch profile metadata: ${response.status} ${response.statusText}`,
-    );
+    if (!response.ok) {
+      return {
+        data: null,
+        error: `Failed to fetch profile metadata: ${response.status} ${response.statusText}`,
+      };
+    }
+
+    const result: MetadataApiResponse<ProfileMetadata> = await response.json();
+
+    if (!result.success || !result.data) {
+      return {
+        data: null,
+        error: result.message || "Failed to fetch profile metadata",
+      };
+    }
+
+    return {
+      data: result.data,
+      error: null,
+    };
+  } catch {
+    return {
+      data: null,
+      error: "Unable to fetch profile metadata",
+    };
   }
-
-  const result: {
-    data: ProfileMetadata;
-    success: boolean;
-    message: string;
-  } = await response.json();
-
-  if (!result.success || !result.data) {
-    throw new Error(result.message || "Failed to fetch profile metadata");
-  }
-
-  return result.data;
 }

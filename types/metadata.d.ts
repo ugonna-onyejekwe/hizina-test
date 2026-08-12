@@ -39,3 +39,12 @@ export type PostMetadata = {
   post: string;
   gifts: number;
 };
+
+export type MetadataApiResponse<T> = {
+  data: T;
+  statusCode: number;
+  message: string;
+  responseCode: string;
+  success: boolean;
+  batchId: string | null;
+};

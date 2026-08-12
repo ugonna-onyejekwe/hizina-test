@@ -1,5 +1,6 @@
-import { PostMetadata } from "@/types/metadata";
 import "server-only";
+
+import type { MetadataApiResponse, PostMetadata } from "@/types/metadata";
 
 const BASE_URL = process.env.HIZINA_METADATA_BASE_URL;
 const API_KEY = process.env.HIZINA_METADATA_KEY;
@@ -9,40 +10,58 @@ type GetPostMetadataParams = {
   postId: string;
 };
 
+type GetPostMetadataResult = {
+  data: PostMetadata | null;
+  error: string | null;
+};
+
 export async function getPostMetadata({
   postRegion,
   postId,
-}: GetPostMetadataParams): Promise<PostMetadata> {
+}: GetPostMetadataParams): Promise<GetPostMetadataResult> {
   if (!BASE_URL || !API_KEY) {
-    throw new Error("Hizina metadata configuration is missing");
+    return {
+      data: null,
+      error: "Hizina metadata configuration is missing",
+    };
   }
 
-  const response = await fetch(`${BASE_URL}/api/metadata/post`, {
-    method: "GET",
-    headers: {
-      accept: "*/*",
-      key: API_KEY,
-      postregion: postRegion,
-      postid: postId,
-    },
-    cache: "no-store",
-  });
+  try {
+    const response = await fetch(`${BASE_URL}/api/metadata/post`, {
+      method: "GET",
+      headers: {
+        accept: "*/*",
+        key: API_KEY,
+        postregion: postRegion,
+        postid: postId,
+      },
+      cache: "no-store",
+    });
 
-  if (!response.ok) {
-    throw new Error(
-      `Failed to fetch post metadata: ${response.status} ${response.statusText}`,
-    );
+    if (!response.ok) {
+      return {
+        data: null,
+        error: `Failed to fetch post metadata: ${response.status} ${response.statusText}`,
+      };
+    }
+
+    const result: MetadataApiResponse<PostMetadata> = await response.json();
+
+    if (!result.success || !result.data) {
+      return {
+        data: null,
+        error: result.message || "Failed to fetch post metadata",
+      };
+    }
+
+    return {
+      data: result.data,
+      error: null,
+    };
+  } catch {
+    return {
+      data: null,
+      error: "Unable to fetch post metadata",
+    };
   }
-
-  const result: {
-    data: PostMetadata;
-    success: boolean;
-    message: string;
-  } = await response.json();
-
-  if (!result.success || !result.data) {
-    throw new Error(result.message || "Failed to fetch post metadata");
-  }
-
-  return result.data;
 }

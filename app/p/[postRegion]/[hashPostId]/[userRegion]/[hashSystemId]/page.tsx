@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 
-type PageProps = {
+import { getPostMetadata } from "@/actions/metadata/post";
+import { getPostPreview } from "@/utilities/metadata-helpers";
+import { SITE_URL } from "@/lib/constants";
+import { DeepLinkPreview } from "@/app/_components/deep-link-preview";
+
+type PostPageProps = {
   params: Promise<{
     postRegion: string;
     hashPostId: string;
@@ -9,53 +14,126 @@ type PageProps = {
   }>;
 };
 
+const DEFAULT_TITLE = "Post | Hizina";
+
+const DEFAULT_DESCRIPTION =
+  "Discover posts, conversations, connections, and commerce on Hizina.";
+
 export async function generateMetadata({
   params,
-}: PageProps): Promise<Metadata> {
+}: PostPageProps): Promise<Metadata> {
   const { postRegion, hashPostId, userRegion, hashSystemId } = await params;
 
-  // TODO: Resolve the post using these parameters.
-  console.log({
+  const canonicalUrl = `${SITE_URL}/p/${postRegion}/${hashPostId}/${userRegion}/${hashSystemId}`;
+
+  const result = await getPostMetadata({
     postRegion,
-    hashPostId,
-    userRegion,
-    hashSystemId,
+    postId: hashPostId,
   });
+  console.log(result.data);
+
+  if (!result.data) {
+    return {
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+
+      alternates: {
+        canonical: canonicalUrl,
+      },
+
+      robots: {
+        index: false,
+        follow: true,
+      },
+
+      openGraph: {
+        type: "article",
+        title: DEFAULT_TITLE,
+        description: DEFAULT_DESCRIPTION,
+        url: canonicalUrl,
+        siteName: "Hizina",
+      },
+
+      twitter: {
+        card: "summary",
+        title: DEFAULT_TITLE,
+        description: DEFAULT_DESCRIPTION,
+      },
+    };
+  }
+
+  const preview = getPostPreview(result.data);
+
+  console.log(preview);
+
+  const title = preview.title || DEFAULT_TITLE;
+  const description = preview.description || DEFAULT_DESCRIPTION;
+
+  const previewImage =
+    preview.media?.type === "video"
+      ? preview.media.thumbnail
+      : preview.media?.url;
 
   return {
-    title: "Post on Hizina",
-    description:
-      "Discover this post and more conversations, connections, and commerce on Hizina.",
+    title,
+    description,
+
+    alternates: {
+      canonical: canonicalUrl,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
 
     openGraph: {
       type: "article",
+      title,
+      description,
+      url: canonicalUrl,
       siteName: "Hizina",
-      title: "Post on Hizina",
-      description:
-        "Discover this post and more conversations, connections, and commerce on Hizina.",
-      url: `/p/${postRegion}/${hashPostId}/${userRegion}/${hashSystemId}`,
-      images: [
-        {
-          url: "/logo.png",
-          width: 1200,
-          height: 630,
-          alt: "Hizina",
-        },
-      ],
+
+      ...(previewImage
+        ? {
+            images: [
+              {
+                url: previewImage,
+                alt: `${preview.author || "Hizina"}'s post on Hizina`,
+              },
+            ],
+          }
+        : {}),
     },
 
     twitter: {
-      card: "summary_large_image",
-      title: "Post on Hizina",
-      description:
-        "Discover this post and more conversations, connections, and commerce on Hizina.",
-      images: ["/logo.png"],
+      card: previewImage ? "summary_large_image" : "summary",
+      title,
+      description,
+
+      ...(previewImage
+        ? {
+            images: [previewImage],
+          }
+        : {}),
     },
   };
 }
 
-export default async function PostPage({ params }: PageProps) {
-  const { postRegion, hashPostId, userRegion, hashSystemId } = await params;
+export default async function PostPage({ params }: PostPageProps) {
+  const { postRegion, hashPostId } = await params;
 
-  return <main>{/* Post UI will go here */}</main>;
+  console.log(postRegion);
+  console.log(hashPostId);
+
+  const result = await getPostMetadata({
+    postRegion,
+    postId: hashPostId,
+  });
+
+  console.log(result);
+
+  const preview = result.data ? getPostPreview(result.data) : undefined;
+
+  return <DeepLinkPreview type="post" data={preview} />;
 }

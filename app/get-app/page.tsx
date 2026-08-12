@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import GetAppPageRedirect from "./_components/getAppRedirect";
 
 export const metadata: Metadata = {
   title: "Get the Hizina App",
@@ -7,10 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function GetAppPage() {
-  return (
-    <main>
-      GetAppPage
-      {/* Get App page UI will go here */}
-    </main>
-  );
+  return <GetAppPageRedirect />;
 }

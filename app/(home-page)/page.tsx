@@ -9,7 +9,7 @@ import { APP_STORE_URLS } from "@/lib/constants";
 
 export default function HomePage() {
   return (
-    <Container className="flex items-center justify-between gap-12 max-md:flex-col-reverse max-md:gap-0 h-fit min-h-[90dvh] mt-[0px]">
+    <Container className="flex items-center justify-between gap-12 max-md:flex-col-reverse max-md:gap-0 h-fit min-h-[90dvh]">
       <div className="flex-1">
         <section className="flex items-center mt-6">
           <a href={APP_STORE_URLS.apple} target="_blank">
@@ -49,7 +49,7 @@ export default function HomePage() {
         </p>
 
         <Link href={page_routes.features}>
-          <Button className="mt-5 rounded-full !px-10 !h-11 group transition-all">
+          <Button className="mt-5  transition-all">
             Explore <ArrowRight className="group-hover:ml-2 transition-all" />
           </Button>
         </Link>
