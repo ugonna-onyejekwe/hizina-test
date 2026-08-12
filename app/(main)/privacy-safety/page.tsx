@@ -29,11 +29,11 @@ export default function PrivacySafetyPage() {
         // type="bottom"
         //  delay={0.3}
         >
-          <section className="mt-5 rounded-lg overflow-hidden  w-full max-h-[500px]">
+          <section className="mt-5 rounded-lg overflow-hidden  w-full max-h-[500px] ">
             <Image
               src="/assets/privacy-hero.jpg"
               alt="privacy-hero"
-              className="w-full h-full"
+              className="w-full h-fit "
               width={400}
               height={400}
             />
