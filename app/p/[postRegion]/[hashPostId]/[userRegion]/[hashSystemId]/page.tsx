@@ -30,7 +30,6 @@ export async function generateMetadata({
     postRegion,
     postId: hashPostId,
   });
-  console.log(result.data);
 
   if (!result.data) {
     return {
@@ -64,10 +63,10 @@ export async function generateMetadata({
 
   const preview = getPostPreview(result.data);
 
-  console.log(preview);
-
   const title = preview.title || DEFAULT_TITLE;
   const description = preview.description || DEFAULT_DESCRIPTION;
+
+  const isVideo = preview.media?.type === "video";
 
   const previewImage =
     preview.media?.type === "video"
@@ -88,7 +87,7 @@ export async function generateMetadata({
     },
 
     openGraph: {
-      type: "article",
+      type: isVideo ? "video.other" : "article",
       title,
       description,
       url: canonicalUrl,
@@ -100,6 +99,17 @@ export async function generateMetadata({
               {
                 url: previewImage,
                 alt: `${preview.author || "Hizina"}'s post on Hizina`,
+              },
+            ],
+          }
+        : {}),
+
+      ...(isVideo && preview.media?.url
+        ? {
+            videos: [
+              {
+                url: preview.media.url,
+                type: "video/mp4",
               },
             ],
           }
