@@ -1,0 +1,17 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.gbikna.hizina",
+      "sha256_cert_fingerprints": [
+        "77:b2:fb:21:43:96:e0:09:54:56:8e:bf:55:70:22:aa:48:7f:d4:fa:92:85:02:60:0a:39:19:53:ce:8b:dd:50",
+        "5f:5d:1f:aa:37:20:0b:da:3d:b5:da:29:57:87:e6:88:21:46:28:5f:66:e8:53:3e:77:67:4b:c2:9f:a7:3d:a2",
+        "28:2A:37:84:4A:37:36:CA:3E:B4:25:70:F5:67:80:7F:C6:15:CC:BC:8C:E3:1A:6A:43:C0:E1:7A:91:BA:17:F4"
+      ]
+    }
+  }
+]
