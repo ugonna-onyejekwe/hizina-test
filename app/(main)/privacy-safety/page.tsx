@@ -25,12 +25,11 @@ export default function PrivacySafetyPage() {
           </h1>
         </div>
 
-        <section className="relative mt-5 w-full min-w-0 max-w-full overflow-hidden rounded-lg aspect-[16/6]">
+        <section className="relative mt-5 w-full mx-auto max-w-[80rem] overflow-hidden rounded-lg aspect-[16/6]">
           <Image
             src="/assets/privacy-hero.jpg"
             alt="Privacy"
             fill
-            sizes="(max-width: 768px) 100vw, 1000px"
             className="object-cover object-top"
           />
         </section>
