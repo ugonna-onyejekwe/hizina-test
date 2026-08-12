@@ -15,3 +15,19 @@ export const nimbusSans = localFont({
   ],
   variable: "--font-nimbus-sans",
 });
+
+export const helvetica = localFont({
+  src: [
+    {
+      path: "../public/fonts/HelveticaNeueBold.otf",
+      weight: "700",
+      style: "normal",
+    },
+    {
+      path: "../public/fonts/HelveticaNeueBlack.otf",
+      weight: "900",
+      style: "normal",
+    },
+  ],
+  variable: "--font-helvetica",
+});
