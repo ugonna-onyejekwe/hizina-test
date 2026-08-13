@@ -12,6 +12,40 @@ export const size = {
 };
 export const contentType = "image/png";
 
+/**
+ * Safely fetches external images (CloudFront, S3, etc.) and converts them to Base64 Data URIs.
+ * Prevents Satori/ImageResponse from throwing 500 errors if external fetch fails.
+ */
+async function getBase64Image(
+  url: string | undefined | null,
+): Promise<string | null> {
+  if (!url) return null;
+
+  // Never attempt to load video stream playlists as static images
+  if (url.includes(".m3u8") || url.includes(".mp4")) return null;
+
+  try {
+    const response = await fetch(url, {
+      cache: "force-cache",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) NextJS-OG-Fetcher",
+      },
+    });
+
+    if (!response.ok) return null;
+
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const mimeType = response.headers.get("content-type") || "image/jpeg";
+
+    return `data:${mimeType};base64,${buffer.toString("base64")}`;
+  } catch (error) {
+    console.error("[OG Image Fetch Error]:", error);
+    return null;
+  }
+}
+
 type Props = {
   params: Promise<{
     postRegion: string;
@@ -24,21 +58,30 @@ type Props = {
 export default async function Image({ params }: Props) {
   const { postRegion, hashPostId } = await params;
 
-  const result = await getPostMetadata({
-    postRegion,
-    postId: hashPostId,
-  });
+  let isVideo = false;
+  let rawBgUrl: string | undefined = undefined;
 
-  const preview = result?.data ? getPostPreview(result.data) : null;
-  const isVideo = preview?.media?.type === "video";
+  try {
+    const result = await getPostMetadata({
+      postRegion,
+      postId: hashPostId,
+    });
 
-  console.log(result);
-  console.log(preview);
-  console.log(isVideo);
+    if (result?.data) {
+      const preview = getPostPreview(result.data);
+      isVideo = preview?.media?.type === "video";
 
-  const bgImage = isVideo
-    ? preview?.media?.thumbnail
-    : preview?.media?.url || preview?.image;
+      // Get the thumbnail for videos, or image URL for photo posts
+      rawBgUrl = isVideo
+        ? preview?.media?.thumbnail
+        : preview?.media?.url || preview?.image;
+    }
+  } catch (error) {
+    console.error("[OG Metadata Error]:", error);
+  }
+
+  // Convert image to Base64 server-side
+  const base64BgImage = await getBase64Image(rawBgUrl);
 
   return new ImageResponse(
     <div
@@ -52,32 +95,45 @@ export default async function Image({ params }: Props) {
         position: "relative",
       }}
     >
-      {/* Use explicit <img> tag instead of CSS backgroundImage */}
-      {bgImage && (
+      {/* Render Base64 Background Image if successfully fetched */}
+      {base64BgImage ? (
         /* eslint-disable-next-line @next/next/no-img-element */
         <img
-          src={bgImage}
+          src={base64BgImage}
           alt="Thumbnail"
           style={{
             position: "absolute",
             top: 0,
             left: 0,
-            width: "100%",
-            height: "100%",
+            width: "1280px",
+            height: "720px",
             objectFit: "cover",
+          }}
+        />
+      ) : (
+        /* Fallback Dark Gradient when image is missing or fetch fails */
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "1280px",
+            height: "720px",
+            background: "linear-gradient(135deg, #18181b 0%, #09090b 100%)",
+            display: "flex",
           }}
         />
       )}
 
-      {/* Dark Tint Overlay */}
+      {/* Dark Overlay */}
       <div
         style={{
           position: "absolute",
           top: 0,
           left: 0,
-          right: 0,
-          bottom: 0,
-          backgroundColor: "rgba(0, 0, 0, 0.25)",
+          width: "1280px",
+          height: "720px",
+          backgroundColor: "rgba(0, 0, 0, 0.35)",
           display: "flex",
         }}
       />
