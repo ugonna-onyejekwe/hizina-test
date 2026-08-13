@@ -38,8 +38,8 @@ export default function HomePage() {
             "font-extrabold text-2xl md:text-4xl lg:text-4xl text_gradient mt-2",
           )}
         >
-          AI powered Social Media designed for everything commerce, trending
-          conversations and connections
+          Social Media designed for everything commerce, trending conversations
+          and connections
         </h1>
 
         <p className="txt mt-5">
