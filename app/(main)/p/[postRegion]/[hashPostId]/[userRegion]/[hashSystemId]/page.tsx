@@ -31,6 +31,8 @@ export async function generateMetadata({
     postId: hashPostId,
   });
 
+  console.log(result);
+
   if (!result.data) {
     return {
       title: DEFAULT_TITLE,
