@@ -63,15 +63,23 @@ export async function generateMetadata({
 
   const preview = getPostPreview(result.data);
 
+  console.log(preview);
+
   const title = preview.title || DEFAULT_TITLE;
   const description = preview.description || DEFAULT_DESCRIPTION;
 
+  // const width = 1280;
+  // const height = 720;
+
   const isVideo = preview.media?.type === "video";
 
-  const previewImage =
-    preview.media?.type === "video"
-      ? preview.media.thumbnail
-      : preview.media?.url;
+  // const previewImage = !preview.media
+  //   ? preview.image
+  //   : preview.media?.type === "video"
+  //     ? `${preview.media.thumbnail}?overlay=play_button_icon`
+  //     : preview.media?.url;
+
+  // console.log(previewImage);
 
   return {
     title,
@@ -93,23 +101,29 @@ export async function generateMetadata({
       url: canonicalUrl,
       siteName: "Hizina",
 
-      ...(previewImage
-        ? {
-            images: [
-              {
-                url: previewImage,
-                alt: `${preview.author || "Hizina"}'s post on Hizina`,
-              },
-            ],
-          }
-        : {}),
+      // ...(previewImage
+      //   ? {
+      //       images: [
+      //         {
+      //           url: previewImage,
+      //           secureUrl: previewImage,
+      //           width,
+      //           height,
+      //           alt: `${preview.author || "Hizina"}'s post on Hizina`,
+      //         },
+      //       ],
+      //     }
+      //   : {}),
 
       ...(isVideo && preview.media?.url
         ? {
             videos: [
               {
                 url: preview.media.url,
+                secureUrl: preview.media.url,
                 type: "video/mp4",
+                width: 1280,
+                height: 720,
               },
             ],
           }
@@ -117,15 +131,15 @@ export async function generateMetadata({
     },
 
     twitter: {
-      card: previewImage ? "summary_large_image" : "summary",
+      card: "summary_large_image",
       title,
       description,
 
-      ...(previewImage
-        ? {
-            images: [previewImage],
-          }
-        : {}),
+      // ...(previewImage
+      //   ? {
+      //       images: [previewImage],
+      //     }
+      //   : {}),
     },
   };
 }
