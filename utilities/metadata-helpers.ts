@@ -50,14 +50,42 @@ function getThumbnail(value: string): string | undefined {
   return metadata?.thumbnailurl || undefined;
 }
 
-function cleanDescription(value: string | null | undefined): string {
-  if (!value?.trim()) {
-    return "Discover this on Hizina.";
+function getEngagementDescription(data: PostMetadata): string {
+  const likes = data.likes ?? 0;
+  const comments = data.comments ?? 0;
+  const shares = data.shares ?? 0;
+
+  const parts: string[] = [];
+
+  if (likes > 0) {
+    parts.push(`${likes} ${likes === 1 ? "like" : "likes"}`);
   }
 
-  const text = value.trim().replace(/\s+/g, " ");
+  if (comments > 0) {
+    parts.push(`${comments} ${comments === 1 ? "comment" : "comments"}`);
+  }
 
-  return text.length > 160 ? `${text.slice(0, 157)}...` : text;
+  if (shares > 0) {
+    parts.push(`${shares} ${shares === 1 ? "share" : "shares"}`);
+  }
+
+  if (!parts.length) {
+    return `A post by ${data.profileData.name || "a Hizina user"} on Hizina.`;
+  }
+
+  return `${parts.join(", ")} — see what ${data.profileData.name || "this user"} shared on Hizina.`;
+}
+
+function getBrief(text: string, maxLength = 60): string {
+  if (!text?.trim()) return "";
+
+  const cleaned = text.trim().replace(/\s+/g, " ");
+
+  if (cleaned.length <= maxLength) {
+    return cleaned;
+  }
+
+  return `${cleaned.slice(0, maxLength).trim()}…`;
 }
 
 export function getPostPreview(data: PostMetadata): DeepLinkPreviewData & {
@@ -70,9 +98,15 @@ export function getPostPreview(data: PostMetadata): DeepLinkPreviewData & {
   const author = data.profileData.name || "Hizina";
   const username = data.profileData.username || "user";
 
+  const title = data.post
+    ? `${getBrief(data.post)}`
+    : `${author} (@${username})`;
+
+  const description = getEngagementDescription(data);
+
   return {
-    title: `${author} (@${username}) | Hizina`,
-    description: cleanDescription(data.post),
+    title,
+    description,
     author,
     name: author,
     username,

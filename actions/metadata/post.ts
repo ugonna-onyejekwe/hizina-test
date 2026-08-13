@@ -1,4 +1,4 @@
-import "server-only";
+// import "server-only";
 
 import type { MetadataApiResponse, PostMetadata } from "@/types/metadata";
 
